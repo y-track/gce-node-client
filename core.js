@@ -7,7 +7,7 @@ var query = function (route, o) {
     var opts = {}
     deepExtend(opts, o, options);
     for (var i in route.required) {
-        if (!opts.hasOwnProperty(route.required[i])) {
+        if (!opts.hasOwnProperty(route.required[i])) { 
             throw new Error("Missing param " + route.required[i]);
         }
     }
@@ -46,10 +46,7 @@ var query = function (route, o) {
             "Authorization": "Bearer " + opts.token
         },
         form: body
-    })
-    //req['headers']['content-type'] = "application/json";
-
-    console.log(req);
+    });
     return req;
 };
 

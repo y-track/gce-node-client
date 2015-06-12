@@ -11,11 +11,11 @@ var routes = {
     get: {
         method: 'GET',
         route: function (opts) {
-            return "/" + opts.project + '/zones/' + opts.zone
+            return "/" + opts.project + '/zones/' + opts.element
         },
-        required: ['project', 'zone'],
+        required: ['project', 'element'],
         bodyParams: [],
-        queryParams: ['project', 'zone']
+        queryParams: ['project', 'element']
     }
 };
 
