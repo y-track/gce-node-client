@@ -41,6 +41,8 @@ var getCredentialsFromMetadata = function(){
         headers: {
             "Metadata-Flavor": "Google"
         }
+    }).then(function(data){
+        return Promise.resolve(JSON.parse(data));
     });
 }
 
