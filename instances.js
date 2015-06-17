@@ -23,13 +23,31 @@ var routes = {
             return "/" + opts.project + '/zones/' + opts.zone + '/instances';
         },
         required: ['project', 'zone', 'name', 'tags', 'canIpForward', 'disks', 'machineType', 'networkInterfaces', 'metadata', 'serviceAccounts'],
-        bodyParams: ['name', 'tags', 'canIpForward', 'disks', 'machineType', 'networkInterfaces', 'metadata', 'serviceAccounts', 'description'],
+        bodyParams: ['name', 'tags', 'canIpForward', 'disks', 'machineType', 'networkInterfaces', 'metadata', 'serviceAccounts', 'description', 'metadataFromFile'],
         queryParams: ['project', 'zone']
     },
     delete: {
     	method: 'DELETE',
         route: function (opts) {
             return "/" + opts.project + '/zones/' + opts.zone + '/instances/' + opts.instance;
+        },
+        required: ['project', 'zone', 'instance'],
+        bodyParams: [],
+        queryParams: ['project', 'zone', 'instance']
+    },
+    stop: {
+        method: 'POST',
+        route: function (opts) {
+            return "/" + opts.project + '/zones/' + opts.zone + '/instances/' + opts.instance + '/stop';
+        },
+        required: ['project', 'zone', 'instance'],
+        bodyParams: [],
+        queryParams: ['project', 'zone', 'instance']
+    },
+    start: {
+        method: 'POST',
+        route: function (opts) {
+            return "/" + opts.project + '/zones/' + opts.zone + '/instances/' + opts.instance + '/start';
         },
         required: ['project', 'zone', 'instance'],
         bodyParams: [],
