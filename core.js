@@ -1,7 +1,14 @@
-var request = require('request-promise'),
-    crypto = require('crypto'),
+var crypto = require('crypto'),
     base64url = require('base64url'),
-    deepExtend = require('deep-extend');
+    deepExtend = require('deep-extend'),
+    fs = require('fs'),
+    sep = require('path').sep;
+
+function CORE(host, metaHost, request){
+    this.host = host || 'www.googleapis.com';
+    this.metaHost = metaHost || 'metadata';
+    this.request = request || require('request-promise');
+}
 
 var query = function (route, o) {
     var opts = {}
@@ -28,9 +35,9 @@ var query = function (route, o) {
         return total;
     }, {});
 
-    var url = "https://www.googleapis.com/compute/v1/projects" + route.route(params);
+    var url = "https://" + this.host + "/compute/v1/projects" + route.route(params);
     var req = (route.method.toUpperCase() === "POST")
-    ? request({
+    ? this.request({
         url: url,
         method: route.method,
         headers: {
@@ -39,7 +46,7 @@ var query = function (route, o) {
         json: true,
         body: body
     })
-    : request({
+    : this.request({
         url: url,
         method: route.method,
         headers: {
@@ -52,19 +59,19 @@ var query = function (route, o) {
 
 var options = {};
 
-module.exports.generateFunctions = function (routes) {
-    return Object.keys(routes).reduce(function (total, key) {
+CORE.prototype.generateFunctions = function (routes) {
+    return Object.keys(routes).reduce((function (total, key) {
         total[key] = query.bind(this, routes[key]);
         return total;
-    }, {});
+    }).bind(this), {});
 };
 
-module.exports.getToken = function (client_email, private_key, scope) {
+CORE.prototype.getToken = function (client_email, private_key, scope) {
     var header = JSON.stringify({"alg":"RS256","typ":"JWT"}),
         jwt = JSON.stringify({
             iss: client_email,
             scope: scope,
-            aud: "https://www.googleapis.com/oauth2/v3/token",
+            aud: "https://" + this.host + "/oauth2/v3/token",
             exp: Math.floor(new Date().getTime() / 1000) + 3600,
             iat: Math.floor(new Date().getTime() / 1000)
         });
@@ -77,9 +84,9 @@ module.exports.getToken = function (client_email, private_key, scope) {
 
     var line = header_64 + '.' + jwt_64 + '.' + sign_64;
 
-    var url = "https://www.googleapis.com/oauth2/v3/token";
+    var url = "https://" + this.host + "/oauth2/v3/token";
 
-    return request({
+    return this.request({
         url: url,
         method: 'POST',
         form: {
@@ -89,6 +96,45 @@ module.exports.getToken = function (client_email, private_key, scope) {
     });
 };
 
-module.exports.configure = function (opts) {
+CORE.prototype.refreshToken = function(options){
+    return this.request({
+        url: 'https://' + this.host + '/oauth2/v3/token',
+        method: 'POST',
+        form: {
+            client_id: options.client_id,
+            client_secret: options.client_secret,
+            refresh_token: options.refresh_token,
+            grant_type: 'refresh_token'
+        },
+        json: true
+    }).then(function(data){
+        return Promise.resolve(data.access_token);
+    });
+}
+
+CORE.prototype.getLocalCredentials = function(){
+  return new Promise(function (fulfill, reject){
+    fs.readFile(process.env.HOME + sep + '.config' + sep + 'gcloud' + sep + 'credentials', 'utf8', function (err, res){
+      if (err) reject(err);
+      else fulfill(JSON.parse(res));
+    });
+  });
+}
+
+CORE.prototype.getCredentialsFromMetadata = function(){
+    return this.request({
+        url: 'http://' + this.metaHost + '/computeMetadata/v1/instance/service-accounts/default/token',
+        method: 'GET',
+        headers: {
+            "Metadata-Flavor": "Google"
+        }
+    }).then(function(data){
+        return Promise.resolve(JSON.parse(data));
+    });
+}
+
+CORE.prototype.configure = function (opts) {
     options = opts;
 };
+
+module.exports = CORE;
