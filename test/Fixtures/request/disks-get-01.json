@@ -1,0 +1,17 @@
+{
+  "kind": "compute#disk",
+  "id": "4847483028142563353",
+  "creationTimestamp": "2015-06-17T09:23:18.160-07:00",
+  "zone": "https://www.googleapis.com/compute/v1/projects/project/zones/zone",
+  "status": "READY",
+  "name": "dbddf",
+  "sizeGb": "14",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/project/zones/zone/disks/dbddf",
+  "sourceImage": "https://www.googleapis.com/compute/v1/projects/debian-cloud/global/images/debian-7-wheezy-v20150526",
+  "sourceImageId": "4783461330810800373",
+  "type": "https://www.googleapis.com/compute/v1/projects/project/zones/zone/diskTypes/pd-standard",
+  "lastAttachTimestamp": "2015-06-17T09:23:19.097-07:00",
+  "users": [
+    "https://www.googleapis.com/compute/v1/projects/project/zones/zone/instances/dbddf"
+  ]
+}

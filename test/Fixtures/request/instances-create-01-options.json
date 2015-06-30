@@ -1,0 +1,46 @@
+{
+  "zone": "zone",
+  "name": "dbddf",
+  "description": "Je suis une description un peu plus elaboree que celle d'avant",
+  "tags": {
+    "items": [
+      "puppet-agent",
+      "zabbix-agent",
+      "live-api"
+    ]
+  },
+  "machineType": "https://www.googleapis.com/compute/v1/projects/project/zones/zone/machineTypes/n1-standard-1",
+  "canIpForward": false,
+  "networkInterfaces": [
+    {
+      "network": "https://www.googleapis.com/compute/v1/projects/project/global/networks/net-loic"
+    }
+  ],
+  "disks": [
+    {
+      "boot": true,
+      "source": "https://www.googleapis.com/compute/v1/projects/project/zones/zone/disks/dbddf"
+    }
+  ],
+  "metadata": {
+    "items": [
+      {
+        "key": "dmp_env",
+        "value": "livedemo"
+      },
+      {
+        "key": "account_id",
+        "value": "000002"
+      },
+      {
+        "key": "role",
+        "value": "dbvisitor-a"
+      },
+      {
+        "key": "startup-script-url",
+        "value": "gs://dmp-liveapi-dev-provisionning/init.sh"
+      }
+    ]
+  },
+  "serviceAccounts": []
+}

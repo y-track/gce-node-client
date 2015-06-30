@@ -1,0 +1,547 @@
+{
+ "kind": "compute#instanceList",
+ "selfLink": "https://www.googleapis.com/compute/v1/projects/project/zones/zone/instances",
+ "id": "projects/project/zones/zone/instances",
+ "items": [
+  {
+   "kind": "compute#instance",
+   "id": "11457358114537374699",
+   "creationTimestamp": "2015-06-15T08:36:17.159-07:00",
+   "zone": "https://www.googleapis.com/compute/v1/projects/project/zones/zone",
+   "status": "TERMINATED",
+   "name": "dbddf",
+   "tags": {
+    "fingerprint": "42WmSpB8rSM="
+   },
+   "machineType": "https://www.googleapis.com/compute/v1/projects/project/zones/zone/machineTypes/n1-standard-1",
+   "canIpForward": false,
+   "networkInterfaces": [
+    {
+     "network": "https://www.googleapis.com/compute/v1/projects/project/global/networks/default",
+     "networkIP": "10.240.162.168",
+     "name": "nic0",
+     "accessConfigs": [
+      {
+       "kind": "compute#accessConfig",
+       "type": "ONE_TO_ONE_NAT",
+       "name": "external-nat"
+      }
+     ]
+    }
+   ],
+   "disks": [
+    {
+     "kind": "compute#attachedDisk",
+     "index": 0,
+     "type": "PERSISTENT",
+     "mode": "READ_WRITE",
+     "source": "https://www.googleapis.com/compute/v1/projects/project/zones/zone/disks/dbddf",
+     "deviceName": "persistent-disk-0",
+     "boot": true,
+     "autoDelete": true,
+     "interface": "SCSI"
+    }
+   ],
+   "metadata": {
+    "kind": "compute#metadata",
+    "fingerprint": "c_KW71G4Huw="
+   },
+   "serviceAccounts": [
+    {
+     "email": "608615760343@developer.gserviceaccount.com",
+     "scopes": [
+      "https://www.googleapis.com/auth/devstorage.full_control"
+     ]
+    }
+   ],
+   "selfLink": "https://www.googleapis.com/compute/v1/projects/project/zones/zone/instances/dbddf",
+   "scheduling": {
+    "onHostMaintenance": "MIGRATE",
+    "automaticRestart": true,
+    "preemptible": false
+   },
+   "cpuPlatform": "Unknown CPU Platform"
+  },
+  {
+   "kind": "compute#instance",
+   "id": "11883713835549033997",
+   "creationTimestamp": "2015-04-23T08:20:24.590-07:00",
+   "zone": "https://www.googleapis.com/compute/v1/projects/project/zones/zone",
+   "status": "TERMINATED",
+   "name": "dev-recoapi-db-a",
+   "tags": {
+    "fingerprint": "42WmSpB8rSM="
+   },
+   "machineType": "https://www.googleapis.com/compute/v1/projects/project/zones/zone/machineTypes/g1-small",
+   "canIpForward": false,
+   "networkInterfaces": [
+    {
+     "network": "https://www.googleapis.com/compute/v1/projects/project/global/networks/reco-dev",
+     "networkIP": "10.240.134.134",
+     "name": "nic0",
+     "accessConfigs": [
+      {
+       "kind": "compute#accessConfig",
+       "type": "ONE_TO_ONE_NAT",
+       "name": "external-nat"
+      }
+     ]
+    }
+   ],
+   "disks": [
+    {
+     "kind": "compute#attachedDisk",
+     "index": 0,
+     "type": "PERSISTENT",
+     "mode": "READ_WRITE",
+     "source": "https://www.googleapis.com/compute/v1/projects/project/zones/zone/disks/dev-recoapi-db-a",
+     "deviceName": "persistent-disk-0",
+     "boot": true,
+     "interface": "SCSI"
+    }
+   ],
+   "metadata": {
+    "kind": "compute#metadata",
+    "fingerprint": "fwMaxW-6vxk=",
+    "items": [
+     {
+      "key": "dmp_env",
+      "value": "dev"
+     },
+     {
+      "key": "role",
+      "value": "db"
+     },
+     {
+      "key": "startup-script",
+      "value": "#!/bin/sh\n\nexport PUPPET_VERSION='3.7.1-1puppetlabs1'\n\nDMP_ENV=$(curl http://metadata.google.internal/computeMetadata/v1/instance/attributes/dmp_env -H \"Metadata-Flavor: Google\")\nMETADATA_RETURN=$?\nif [ $METADATA_RETURN -eq 0 ]; then\n    export ENV=$DMP_ENV\nelse\n    if [ x\"$1\" = x ] ;\n    then\n        export ENV='live1'\n    else\n        export ENV=$1\n    fi\nfi\n\nif [ x\"$ENV\" = x'live1' ] ; then\n    export http_proxy='http://live1-zabbix-proxy:3128'\n    export https_proxy=$http_proxy\n    export SERVER_PREFIX='live1'\n    export DOMAIN='c.dmp-prod.internal'\n    export PUPPET_MASTER=\"${SERVER_PREFIX}-puppet.${DOMAIN}\"\n\n    cat \u003e /etc/profile.d/proxy.sh \u003c\u003c EOF\n#!/bin/bash\nexport http_proxy=${http_proxy}\nexport https_proxy=${https_proxy}\nexport no_proxy=169.254.169.254,metadata,metadata.google.internal\nEOF\n\n    cat \u003e /etc/apt/apt.conf.d/proxy \u003c\u003c EOF\nAcquire::http::Proxy \"${http_proxy}\";\nEOF\n\nelif [ x\"$ENV\" = x'r0' ] ; then\n    export SERVER_PREFIX='r0'\n    export DOMAIN='c.mindful-origin-252.internal'\n    export PUPPET_MASTER='puppet.dmp.y-track.com'\nelif [ x\"$ENV\" = x'int0' ] ; then\n    export SERVER_PREFIX='int0'\n    export DOMAIN='c.mindful-origin-252.internal'\n    export PUPPET_MASTER='puppet.dmp.y-track.com'\nelif [ x\"$ENV\" = x'livedemo' ] ; then\n    export SERVER_PREFIX='livedemo'\n    export DOMAIN='c.mindful-origin-252.internal'\n    export PUPPET_MASTER='puppet.dmp.y-track.com'\nelif [ x\"$ENV\" = x'dev' ] ; then\n    export SERVER_PREFIX='d1'\n    export DOMAIN='dmp.y-track.com'\n    export PUPPET_MASTER=\"${SERVER_PREFIX}-puppet.${DOMAIN}\"\nelif [ x\"$ENV\" = x'local' ] ; then\n    export SERVER_PREFIX='livelocal'\n    export DOMAIN='dmp.y-track.com'\n    export PUPPET_MASTER=\"${SERVER_PREFIX}-puppet.${DOMAIN}\"\nelse\n    \u003e&2 echo 'Dont understand the environment'\n    exit 1\nfi\n\n\n# make sure only root can run our script\nif [ \"$(id -u)\" != \"0\" ]; then\n   echo \"This script must be run as root\" 1\u003e&2\n   exit 1\nfi\n\n# go to temp dir\ncd /tmp\n\n#install puppet repo\nif [ ! -f /etc/apt/sources.list.d/puppetlabs.list ]; then\n    wget https://apt.puppetlabs.com/puppetlabs-release-trusty.deb 2\u003e&1\n    dpkg -i puppetlabs-release-trusty.deb\n    apt-get update\nfi\n\n# first install\napt-get -y install vim git\n\n\n# create group puppet\ngroupadd -f puppet\n\n\n# install puppet\nif [ x\"$PUPPET_VERSION\" = x\"latest\" ]; then\n    rm -f /etc/apt/preferences.d/puppet.pref\nelse\n    cat \u003e /etc/apt/preferences.d/puppet.pref \u003c\u003c EOF\n\\# puppet packages\nExplanation: pin puppet packages to desired version\nPackage: puppet puppet-common puppetmaster puppetmaster-common\nPin: version ${PUPPET_VERSION}\nPin-Priority: 1000\nEOF\n    chmod 0644 /etc/apt/preferences.d/puppet.pref\n    chown root:root /etc/apt/preferences.d/puppet.pref\nfi\n\napt-get -y install puppet=$PUPPET_VERSION\nservice puppet stop\n\n\n# check facter file permissions\nif [ ! -f /etc/facter/facts.d/env.txt ]; then\n    mkdir -p  /etc/facter/facts.d\n    touch /etc/facter/facts.d/env.txt\nfi\n\nchmod 0644 /etc/facter /etc/facter/facts.d /etc/facter/facts.d/env.txt\nchown root:root /etc/facter /etc/facter/facts.d /etc/facter/facts.d/env.txt\n\n# Create puppetconfig file\ncat \u003e /etc/puppet/puppet.conf \u003c\u003c EOF\n[main]\n# The Puppet log directory.\n# The default value is '\\$vardir/log'.\nlogdir = /var/log/puppet\n\n# Where Puppet PID files are kept.\n# The default value is '\\$vardir/run'.\nrundir = /var/run/puppet\n\n# Where SSL certificates are kept.\n# The default value is '\\$confdir/ssl'.\nssldir = \\$vardir/ssl\n\nenvironmentpath = '\\$confdir/environments'\npluginsync = true\nserver= ${PUPPET_MASTER}\nparser = future\nEOF\nif [ x\"$http_proxy\" != x'' ] ; then\n    cat \u003e\u003e /etc/puppet/puppet.conf \u003c\u003c EOF\nhttp_proxy_host = ${SERVER_PREFIX}-zabbix-proxy\nhttp_proxy_port = 3128\nEOF\nfi\n\ncat \u003e\u003e /etc/puppet/puppet.conf \u003c\u003c EOF\n\n[agent]\n# The file in which puppetd stores a list of the classes\n# associated with the retrieved configuratiion.  Can be loaded in\n# the separate ``puppet`` executable using the ``--loadclasses``\n# option.\n# The default value is '\\$confdir/classes.txt'.\nclassfile = \\$vardir/classes.txt\n\n# Where puppetd caches the local configuration.  An\n# extension indicating the cache format is added automatically.\n# The default value is '\\$confdir/localconfig'.\nlocalconfig = \\$vardir/localconfig\n\nenvironment = ${ENV}\n\n[master]\n    certname = ${SERVER_PREFIX}-puppet.${DOMAIN}\n    dns_alt_names = ${SERVER_PREFIX}-puppet,puppet,puppet.${DOMAIN},puppet.dmp.y-track.com\n\nEOF\nchmod 0644 /etc/apt/preferences.d/puppet.pref\nchown puppet:puppet /etc/apt/preferences.d/puppet.pref\n\n"
+     }
+    ]
+   },
+   "serviceAccounts": [
+    {
+     "email": "608615760343@developer.gserviceaccount.com",
+     "scopes": [
+      "https://www.googleapis.com/auth/devstorage.full_control"
+     ]
+    }
+   ],
+   "selfLink": "https://www.googleapis.com/compute/v1/projects/project/zones/zone/instances/dev-recoapi-db-a",
+   "scheduling": {
+    "onHostMaintenance": "MIGRATE",
+    "automaticRestart": true,
+    "preemptible": false
+   },
+   "cpuPlatform": "Unknown CPU Platform"
+  },
+  {
+   "kind": "compute#instance",
+   "id": "2701871265145366768",
+   "creationTimestamp": "2015-04-23T08:21:00.055-07:00",
+   "zone": "https://www.googleapis.com/compute/v1/projects/project/zones/zone",
+   "status": "TERMINATED",
+   "name": "dev-recoapi-db-b",
+   "tags": {
+    "fingerprint": "42WmSpB8rSM="
+   },
+   "machineType": "https://www.googleapis.com/compute/v1/projects/project/zones/zone/machineTypes/g1-small",
+   "canIpForward": false,
+   "networkInterfaces": [
+    {
+     "network": "https://www.googleapis.com/compute/v1/projects/project/global/networks/reco-dev",
+     "networkIP": "10.240.21.92",
+     "name": "nic0",
+     "accessConfigs": [
+      {
+       "kind": "compute#accessConfig",
+       "type": "ONE_TO_ONE_NAT",
+       "name": "external-nat"
+      }
+     ]
+    }
+   ],
+   "disks": [
+    {
+     "kind": "compute#attachedDisk",
+     "index": 0,
+     "type": "PERSISTENT",
+     "mode": "READ_WRITE",
+     "source": "https://www.googleapis.com/compute/v1/projects/project/zones/zone/disks/dev-recoapi-db-b",
+     "deviceName": "persistent-disk-0",
+     "boot": true,
+     "interface": "SCSI"
+    }
+   ],
+   "metadata": {
+    "kind": "compute#metadata",
+    "fingerprint": "fwMaxW-6vxk=",
+    "items": [
+     {
+      "key": "dmp_env",
+      "value": "dev"
+     },
+     {
+      "key": "role",
+      "value": "db"
+     },
+     {
+      "key": "startup-script",
+      "value": "#!/bin/sh\n\nexport PUPPET_VERSION='3.7.1-1puppetlabs1'\n\nDMP_ENV=$(curl http://metadata.google.internal/computeMetadata/v1/instance/attributes/dmp_env -H \"Metadata-Flavor: Google\")\nMETADATA_RETURN=$?\nif [ $METADATA_RETURN -eq 0 ]; then\n    export ENV=$DMP_ENV\nelse\n    if [ x\"$1\" = x ] ;\n    then\n        export ENV='live1'\n    else\n        export ENV=$1\n    fi\nfi\n\nif [ x\"$ENV\" = x'live1' ] ; then\n    export http_proxy='http://live1-zabbix-proxy:3128'\n    export https_proxy=$http_proxy\n    export SERVER_PREFIX='live1'\n    export DOMAIN='c.dmp-prod.internal'\n    export PUPPET_MASTER=\"${SERVER_PREFIX}-puppet.${DOMAIN}\"\n\n    cat \u003e /etc/profile.d/proxy.sh \u003c\u003c EOF\n#!/bin/bash\nexport http_proxy=${http_proxy}\nexport https_proxy=${https_proxy}\nexport no_proxy=169.254.169.254,metadata,metadata.google.internal\nEOF\n\n    cat \u003e /etc/apt/apt.conf.d/proxy \u003c\u003c EOF\nAcquire::http::Proxy \"${http_proxy}\";\nEOF\n\nelif [ x\"$ENV\" = x'r0' ] ; then\n    export SERVER_PREFIX='r0'\n    export DOMAIN='c.mindful-origin-252.internal'\n    export PUPPET_MASTER='puppet.dmp.y-track.com'\nelif [ x\"$ENV\" = x'int0' ] ; then\n    export SERVER_PREFIX='int0'\n    export DOMAIN='c.mindful-origin-252.internal'\n    export PUPPET_MASTER='puppet.dmp.y-track.com'\nelif [ x\"$ENV\" = x'livedemo' ] ; then\n    export SERVER_PREFIX='livedemo'\n    export DOMAIN='c.mindful-origin-252.internal'\n    export PUPPET_MASTER='puppet.dmp.y-track.com'\nelif [ x\"$ENV\" = x'dev' ] ; then\n    export SERVER_PREFIX='d1'\n    export DOMAIN='dmp.y-track.com'\n    export PUPPET_MASTER=\"${SERVER_PREFIX}-puppet.${DOMAIN}\"\nelif [ x\"$ENV\" = x'local' ] ; then\n    export SERVER_PREFIX='livelocal'\n    export DOMAIN='dmp.y-track.com'\n    export PUPPET_MASTER=\"${SERVER_PREFIX}-puppet.${DOMAIN}\"\nelse\n    \u003e&2 echo 'Dont understand the environment'\n    exit 1\nfi\n\n\n# make sure only root can run our script\nif [ \"$(id -u)\" != \"0\" ]; then\n   echo \"This script must be run as root\" 1\u003e&2\n   exit 1\nfi\n\n# go to temp dir\ncd /tmp\n\n#install puppet repo\nif [ ! -f /etc/apt/sources.list.d/puppetlabs.list ]; then\n    wget https://apt.puppetlabs.com/puppetlabs-release-trusty.deb 2\u003e&1\n    dpkg -i puppetlabs-release-trusty.deb\n    apt-get update\nfi\n\n# first install\napt-get -y install vim git\n\n\n# create group puppet\ngroupadd -f puppet\n\n\n# install puppet\nif [ x\"$PUPPET_VERSION\" = x\"latest\" ]; then\n    rm -f /etc/apt/preferences.d/puppet.pref\nelse\n    cat \u003e /etc/apt/preferences.d/puppet.pref \u003c\u003c EOF\n\\# puppet packages\nExplanation: pin puppet packages to desired version\nPackage: puppet puppet-common puppetmaster puppetmaster-common\nPin: version ${PUPPET_VERSION}\nPin-Priority: 1000\nEOF\n    chmod 0644 /etc/apt/preferences.d/puppet.pref\n    chown root:root /etc/apt/preferences.d/puppet.pref\nfi\n\napt-get -y install puppet=$PUPPET_VERSION\nservice puppet stop\n\n\n# check facter file permissions\nif [ ! -f /etc/facter/facts.d/env.txt ]; then\n    mkdir -p  /etc/facter/facts.d\n    touch /etc/facter/facts.d/env.txt\nfi\n\nchmod 0644 /etc/facter /etc/facter/facts.d /etc/facter/facts.d/env.txt\nchown root:root /etc/facter /etc/facter/facts.d /etc/facter/facts.d/env.txt\n\n# Create puppetconfig file\ncat \u003e /etc/puppet/puppet.conf \u003c\u003c EOF\n[main]\n# The Puppet log directory.\n# The default value is '\\$vardir/log'.\nlogdir = /var/log/puppet\n\n# Where Puppet PID files are kept.\n# The default value is '\\$vardir/run'.\nrundir = /var/run/puppet\n\n# Where SSL certificates are kept.\n# The default value is '\\$confdir/ssl'.\nssldir = \\$vardir/ssl\n\nenvironmentpath = '\\$confdir/environments'\npluginsync = true\nserver= ${PUPPET_MASTER}\nparser = future\nEOF\nif [ x\"$http_proxy\" != x'' ] ; then\n    cat \u003e\u003e /etc/puppet/puppet.conf \u003c\u003c EOF\nhttp_proxy_host = ${SERVER_PREFIX}-zabbix-proxy\nhttp_proxy_port = 3128\nEOF\nfi\n\ncat \u003e\u003e /etc/puppet/puppet.conf \u003c\u003c EOF\n\n[agent]\n# The file in which puppetd stores a list of the classes\n# associated with the retrieved configuratiion.  Can be loaded in\n# the separate ``puppet`` executable using the ``--loadclasses``\n# option.\n# The default value is '\\$confdir/classes.txt'.\nclassfile = \\$vardir/classes.txt\n\n# Where puppetd caches the local configuration.  An\n# extension indicating the cache format is added automatically.\n# The default value is '\\$confdir/localconfig'.\nlocalconfig = \\$vardir/localconfig\n\nenvironment = ${ENV}\n\n[master]\n    certname = ${SERVER_PREFIX}-puppet.${DOMAIN}\n    dns_alt_names = ${SERVER_PREFIX}-puppet,puppet,puppet.${DOMAIN},puppet.dmp.y-track.com\n\nEOF\nchmod 0644 /etc/apt/preferences.d/puppet.pref\nchown puppet:puppet /etc/apt/preferences.d/puppet.pref\n\n"
+     }
+    ]
+   },
+   "serviceAccounts": [
+    {
+     "email": "608615760343@developer.gserviceaccount.com",
+     "scopes": [
+      "https://www.googleapis.com/auth/devstorage.full_control"
+     ]
+    }
+   ],
+   "selfLink": "https://www.googleapis.com/compute/v1/projects/project/zones/zone/instances/dev-recoapi-db-b",
+   "scheduling": {
+    "onHostMaintenance": "MIGRATE",
+    "automaticRestart": true,
+    "preemptible": false
+   },
+   "cpuPlatform": "Unknown CPU Platform"
+  },
+  {
+   "kind": "compute#instance",
+   "id": "14888588629828291441",
+   "creationTimestamp": "2015-04-23T08:19:30.896-07:00",
+   "zone": "https://www.googleapis.com/compute/v1/projects/project/zones/zone",
+   "status": "TERMINATED",
+   "name": "dev-recoapi-web-a",
+   "tags": {
+    "fingerprint": "42WmSpB8rSM="
+   },
+   "machineType": "https://www.googleapis.com/compute/v1/projects/project/zones/zone/machineTypes/g1-small",
+   "canIpForward": false,
+   "networkInterfaces": [
+    {
+     "network": "https://www.googleapis.com/compute/v1/projects/project/global/networks/reco-dev",
+     "networkIP": "10.240.2.168",
+     "name": "nic0",
+     "accessConfigs": [
+      {
+       "kind": "compute#accessConfig",
+       "type": "ONE_TO_ONE_NAT",
+       "name": "external-nat"
+      }
+     ]
+    }
+   ],
+   "disks": [
+    {
+     "kind": "compute#attachedDisk",
+     "index": 0,
+     "type": "PERSISTENT",
+     "mode": "READ_WRITE",
+     "source": "https://www.googleapis.com/compute/v1/projects/project/zones/zone/disks/dev-recoapi-web-a",
+     "deviceName": "persistent-disk-0",
+     "boot": true,
+     "interface": "SCSI"
+    }
+   ],
+   "metadata": {
+    "kind": "compute#metadata",
+    "fingerprint": "z-pttqf7Y2M=",
+    "items": [
+     {
+      "key": "dmp_env",
+      "value": "dev"
+     },
+     {
+      "key": "role",
+      "value": "web"
+     },
+     {
+      "key": "startup-script",
+      "value": "#!/bin/sh\n\nexport PUPPET_VERSION='3.7.1-1puppetlabs1'\n\nDMP_ENV=$(curl http://metadata.google.internal/computeMetadata/v1/instance/attributes/dmp_env -H \"Metadata-Flavor: Google\")\nMETADATA_RETURN=$?\nif [ $METADATA_RETURN -eq 0 ]; then\n    export ENV=$DMP_ENV\nelse\n    if [ x\"$1\" = x ] ;\n    then\n        export ENV='live1'\n    else\n        export ENV=$1\n    fi\nfi\n\nif [ x\"$ENV\" = x'live1' ] ; then\n    export http_proxy='http://live1-zabbix-proxy:3128'\n    export https_proxy=$http_proxy\n    export SERVER_PREFIX='live1'\n    export DOMAIN='c.dmp-prod.internal'\n    export PUPPET_MASTER=\"${SERVER_PREFIX}-puppet.${DOMAIN}\"\n\n    cat \u003e /etc/profile.d/proxy.sh \u003c\u003c EOF\n#!/bin/bash\nexport http_proxy=${http_proxy}\nexport https_proxy=${https_proxy}\nexport no_proxy=169.254.169.254,metadata,metadata.google.internal\nEOF\n\n    cat \u003e /etc/apt/apt.conf.d/proxy \u003c\u003c EOF\nAcquire::http::Proxy \"${http_proxy}\";\nEOF\n\nelif [ x\"$ENV\" = x'r0' ] ; then\n    export SERVER_PREFIX='r0'\n    export DOMAIN='c.mindful-origin-252.internal'\n    export PUPPET_MASTER='puppet.dmp.y-track.com'\nelif [ x\"$ENV\" = x'int0' ] ; then\n    export SERVER_PREFIX='int0'\n    export DOMAIN='c.mindful-origin-252.internal'\n    export PUPPET_MASTER='puppet.dmp.y-track.com'\nelif [ x\"$ENV\" = x'livedemo' ] ; then\n    export SERVER_PREFIX='livedemo'\n    export DOMAIN='c.mindful-origin-252.internal'\n    export PUPPET_MASTER='puppet.dmp.y-track.com'\nelif [ x\"$ENV\" = x'dev' ] ; then\n    export SERVER_PREFIX='d1'\n    export DOMAIN='dmp.y-track.com'\n    export PUPPET_MASTER=\"${SERVER_PREFIX}-puppet.${DOMAIN}\"\nelif [ x\"$ENV\" = x'local' ] ; then\n    export SERVER_PREFIX='livelocal'\n    export DOMAIN='dmp.y-track.com'\n    export PUPPET_MASTER=\"${SERVER_PREFIX}-puppet.${DOMAIN}\"\nelse\n    \u003e&2 echo 'Dont understand the environment'\n    exit 1\nfi\n\n\n# make sure only root can run our script\nif [ \"$(id -u)\" != \"0\" ]; then\n   echo \"This script must be run as root\" 1\u003e&2\n   exit 1\nfi\n\n# go to temp dir\ncd /tmp\n\n#install puppet repo\nif [ ! -f /etc/apt/sources.list.d/puppetlabs.list ]; then\n    wget https://apt.puppetlabs.com/puppetlabs-release-trusty.deb 2\u003e&1\n    dpkg -i puppetlabs-release-trusty.deb\n    apt-get update\nfi\n\n# first install\napt-get -y install vim git\n\n\n# create group puppet\ngroupadd -f puppet\n\n\n# install puppet\nif [ x\"$PUPPET_VERSION\" = x\"latest\" ]; then\n    rm -f /etc/apt/preferences.d/puppet.pref\nelse\n    cat \u003e /etc/apt/preferences.d/puppet.pref \u003c\u003c EOF\n\\# puppet packages\nExplanation: pin puppet packages to desired version\nPackage: puppet puppet-common puppetmaster puppetmaster-common\nPin: version ${PUPPET_VERSION}\nPin-Priority: 1000\nEOF\n    chmod 0644 /etc/apt/preferences.d/puppet.pref\n    chown root:root /etc/apt/preferences.d/puppet.pref\nfi\n\napt-get -y install puppet=$PUPPET_VERSION\nservice puppet stop\n\n\n# check facter file permissions\nif [ ! -f /etc/facter/facts.d/env.txt ]; then\n    mkdir -p  /etc/facter/facts.d\n    touch /etc/facter/facts.d/env.txt\nfi\n\nchmod 0644 /etc/facter /etc/facter/facts.d /etc/facter/facts.d/env.txt\nchown root:root /etc/facter /etc/facter/facts.d /etc/facter/facts.d/env.txt\n\n# Create puppetconfig file\ncat \u003e /etc/puppet/puppet.conf \u003c\u003c EOF\n[main]\n# The Puppet log directory.\n# The default value is '\\$vardir/log'.\nlogdir = /var/log/puppet\n\n# Where Puppet PID files are kept.\n# The default value is '\\$vardir/run'.\nrundir = /var/run/puppet\n\n# Where SSL certificates are kept.\n# The default value is '\\$confdir/ssl'.\nssldir = \\$vardir/ssl\n\nenvironmentpath = '\\$confdir/environments'\npluginsync = true\nserver= ${PUPPET_MASTER}\nparser = future\nEOF\nif [ x\"$http_proxy\" != x'' ] ; then\n    cat \u003e\u003e /etc/puppet/puppet.conf \u003c\u003c EOF\nhttp_proxy_host = ${SERVER_PREFIX}-zabbix-proxy\nhttp_proxy_port = 3128\nEOF\nfi\n\ncat \u003e\u003e /etc/puppet/puppet.conf \u003c\u003c EOF\n\n[agent]\n# The file in which puppetd stores a list of the classes\n# associated with the retrieved configuratiion.  Can be loaded in\n# the separate ``puppet`` executable using the ``--loadclasses``\n# option.\n# The default value is '\\$confdir/classes.txt'.\nclassfile = \\$vardir/classes.txt\n\n# Where puppetd caches the local configuration.  An\n# extension indicating the cache format is added automatically.\n# The default value is '\\$confdir/localconfig'.\nlocalconfig = \\$vardir/localconfig\n\nenvironment = ${ENV}\n\n[master]\n    certname = ${SERVER_PREFIX}-puppet.${DOMAIN}\n    dns_alt_names = ${SERVER_PREFIX}-puppet,puppet,puppet.${DOMAIN},puppet.dmp.y-track.com\n\nEOF\nchmod 0644 /etc/apt/preferences.d/puppet.pref\nchown puppet:puppet /etc/apt/preferences.d/puppet.pref\n\n"
+     }
+    ]
+   },
+   "serviceAccounts": [
+    {
+     "email": "608615760343@developer.gserviceaccount.com",
+     "scopes": [
+      "https://www.googleapis.com/auth/devstorage.full_control"
+     ]
+    }
+   ],
+   "selfLink": "https://www.googleapis.com/compute/v1/projects/project/zones/zone/instances/dev-recoapi-web-a",
+   "scheduling": {
+    "onHostMaintenance": "MIGRATE",
+    "automaticRestart": true,
+    "preemptible": false
+   },
+   "cpuPlatform": "Unknown CPU Platform"
+  },
+  {
+   "kind": "compute#instance",
+   "id": "6070877607827714658",
+   "creationTimestamp": "2015-04-23T08:19:54.682-07:00",
+   "zone": "https://www.googleapis.com/compute/v1/projects/project/zones/zone",
+   "status": "TERMINATED",
+   "name": "dev-recoapi-web-b",
+   "tags": {
+    "fingerprint": "42WmSpB8rSM="
+   },
+   "machineType": "https://www.googleapis.com/compute/v1/projects/project/zones/zone/machineTypes/g1-small",
+   "canIpForward": false,
+   "networkInterfaces": [
+    {
+     "network": "https://www.googleapis.com/compute/v1/projects/project/global/networks/reco-dev",
+     "networkIP": "10.240.80.25",
+     "name": "nic0",
+     "accessConfigs": [
+      {
+       "kind": "compute#accessConfig",
+       "type": "ONE_TO_ONE_NAT",
+       "name": "external-nat"
+      }
+     ]
+    }
+   ],
+   "disks": [
+    {
+     "kind": "compute#attachedDisk",
+     "index": 0,
+     "type": "PERSISTENT",
+     "mode": "READ_WRITE",
+     "source": "https://www.googleapis.com/compute/v1/projects/project/zones/zone/disks/dev-recoapi-web-b",
+     "deviceName": "persistent-disk-0",
+     "boot": true,
+     "interface": "SCSI"
+    }
+   ],
+   "metadata": {
+    "kind": "compute#metadata",
+    "fingerprint": "z-pttqf7Y2M=",
+    "items": [
+     {
+      "key": "dmp_env",
+      "value": "dev"
+     },
+     {
+      "key": "role",
+      "value": "web"
+     },
+     {
+      "key": "startup-script",
+      "value": "#!/bin/sh\n\nexport PUPPET_VERSION='3.7.1-1puppetlabs1'\n\nDMP_ENV=$(curl http://metadata.google.internal/computeMetadata/v1/instance/attributes/dmp_env -H \"Metadata-Flavor: Google\")\nMETADATA_RETURN=$?\nif [ $METADATA_RETURN -eq 0 ]; then\n    export ENV=$DMP_ENV\nelse\n    if [ x\"$1\" = x ] ;\n    then\n        export ENV='live1'\n    else\n        export ENV=$1\n    fi\nfi\n\nif [ x\"$ENV\" = x'live1' ] ; then\n    export http_proxy='http://live1-zabbix-proxy:3128'\n    export https_proxy=$http_proxy\n    export SERVER_PREFIX='live1'\n    export DOMAIN='c.dmp-prod.internal'\n    export PUPPET_MASTER=\"${SERVER_PREFIX}-puppet.${DOMAIN}\"\n\n    cat \u003e /etc/profile.d/proxy.sh \u003c\u003c EOF\n#!/bin/bash\nexport http_proxy=${http_proxy}\nexport https_proxy=${https_proxy}\nexport no_proxy=169.254.169.254,metadata,metadata.google.internal\nEOF\n\n    cat \u003e /etc/apt/apt.conf.d/proxy \u003c\u003c EOF\nAcquire::http::Proxy \"${http_proxy}\";\nEOF\n\nelif [ x\"$ENV\" = x'r0' ] ; then\n    export SERVER_PREFIX='r0'\n    export DOMAIN='c.mindful-origin-252.internal'\n    export PUPPET_MASTER='puppet.dmp.y-track.com'\nelif [ x\"$ENV\" = x'int0' ] ; then\n    export SERVER_PREFIX='int0'\n    export DOMAIN='c.mindful-origin-252.internal'\n    export PUPPET_MASTER='puppet.dmp.y-track.com'\nelif [ x\"$ENV\" = x'livedemo' ] ; then\n    export SERVER_PREFIX='livedemo'\n    export DOMAIN='c.mindful-origin-252.internal'\n    export PUPPET_MASTER='puppet.dmp.y-track.com'\nelif [ x\"$ENV\" = x'dev' ] ; then\n    export SERVER_PREFIX='d1'\n    export DOMAIN='dmp.y-track.com'\n    export PUPPET_MASTER=\"${SERVER_PREFIX}-puppet.${DOMAIN}\"\nelif [ x\"$ENV\" = x'local' ] ; then\n    export SERVER_PREFIX='livelocal'\n    export DOMAIN='dmp.y-track.com'\n    export PUPPET_MASTER=\"${SERVER_PREFIX}-puppet.${DOMAIN}\"\nelse\n    \u003e&2 echo 'Dont understand the environment'\n    exit 1\nfi\n\n\n# make sure only root can run our script\nif [ \"$(id -u)\" != \"0\" ]; then\n   echo \"This script must be run as root\" 1\u003e&2\n   exit 1\nfi\n\n# go to temp dir\ncd /tmp\n\n#install puppet repo\nif [ ! -f /etc/apt/sources.list.d/puppetlabs.list ]; then\n    wget https://apt.puppetlabs.com/puppetlabs-release-trusty.deb 2\u003e&1\n    dpkg -i puppetlabs-release-trusty.deb\n    apt-get update\nfi\n\n# first install\napt-get -y install vim git\n\n\n# create group puppet\ngroupadd -f puppet\n\n\n# install puppet\nif [ x\"$PUPPET_VERSION\" = x\"latest\" ]; then\n    rm -f /etc/apt/preferences.d/puppet.pref\nelse\n    cat \u003e /etc/apt/preferences.d/puppet.pref \u003c\u003c EOF\n\\# puppet packages\nExplanation: pin puppet packages to desired version\nPackage: puppet puppet-common puppetmaster puppetmaster-common\nPin: version ${PUPPET_VERSION}\nPin-Priority: 1000\nEOF\n    chmod 0644 /etc/apt/preferences.d/puppet.pref\n    chown root:root /etc/apt/preferences.d/puppet.pref\nfi\n\napt-get -y install puppet=$PUPPET_VERSION\nservice puppet stop\n\n\n# check facter file permissions\nif [ ! -f /etc/facter/facts.d/env.txt ]; then\n    mkdir -p  /etc/facter/facts.d\n    touch /etc/facter/facts.d/env.txt\nfi\n\nchmod 0644 /etc/facter /etc/facter/facts.d /etc/facter/facts.d/env.txt\nchown root:root /etc/facter /etc/facter/facts.d /etc/facter/facts.d/env.txt\n\n# Create puppetconfig file\ncat \u003e /etc/puppet/puppet.conf \u003c\u003c EOF\n[main]\n# The Puppet log directory.\n# The default value is '\\$vardir/log'.\nlogdir = /var/log/puppet\n\n# Where Puppet PID files are kept.\n# The default value is '\\$vardir/run'.\nrundir = /var/run/puppet\n\n# Where SSL certificates are kept.\n# The default value is '\\$confdir/ssl'.\nssldir = \\$vardir/ssl\n\nenvironmentpath = '\\$confdir/environments'\npluginsync = true\nserver= ${PUPPET_MASTER}\nparser = future\nEOF\nif [ x\"$http_proxy\" != x'' ] ; then\n    cat \u003e\u003e /etc/puppet/puppet.conf \u003c\u003c EOF\nhttp_proxy_host = ${SERVER_PREFIX}-zabbix-proxy\nhttp_proxy_port = 3128\nEOF\nfi\n\ncat \u003e\u003e /etc/puppet/puppet.conf \u003c\u003c EOF\n\n[agent]\n# The file in which puppetd stores a list of the classes\n# associated with the retrieved configuratiion.  Can be loaded in\n# the separate ``puppet`` executable using the ``--loadclasses``\n# option.\n# The default value is '\\$confdir/classes.txt'.\nclassfile = \\$vardir/classes.txt\n\n# Where puppetd caches the local configuration.  An\n# extension indicating the cache format is added automatically.\n# The default value is '\\$confdir/localconfig'.\nlocalconfig = \\$vardir/localconfig\n\nenvironment = ${ENV}\n\n[master]\n    certname = ${SERVER_PREFIX}-puppet.${DOMAIN}\n    dns_alt_names = ${SERVER_PREFIX}-puppet,puppet,puppet.${DOMAIN},puppet.dmp.y-track.com\n\nEOF\nchmod 0644 /etc/apt/preferences.d/puppet.pref\nchown puppet:puppet /etc/apt/preferences.d/puppet.pref\n\n"
+     }
+    ]
+   },
+   "serviceAccounts": [
+    {
+     "email": "608615760343@developer.gserviceaccount.com",
+     "scopes": [
+      "https://www.googleapis.com/auth/devstorage.full_control"
+     ]
+    }
+   ],
+   "selfLink": "https://www.googleapis.com/compute/v1/projects/project/zones/zone/instances/dev-recoapi-web-b",
+   "scheduling": {
+    "onHostMaintenance": "MIGRATE",
+    "automaticRestart": true,
+    "preemptible": false
+   },
+   "cpuPlatform": "Unknown CPU Platform"
+  },
+  {
+   "kind": "compute#instance",
+   "id": "15135041120089620599",
+   "creationTimestamp": "2015-06-17T09:23:17.765-07:00",
+   "zone": "https://www.googleapis.com/compute/v1/projects/project/zones/zone",
+   "status": "RUNNING",
+   "name": "prefixtest-api-dbvisitor-000002-a",
+   "description": "Je suis une description un peu plus elaboree que celle d'avant",
+   "tags": {
+    "items": [
+     "puppet-agent",
+     "zabbix-agent",
+     "live-api"
+    ],
+    "fingerprint": "dm5e2e0W8lQ="
+   },
+   "machineType": "https://www.googleapis.com/compute/v1/projects/project/zones/zone/machineTypes/g1-small",
+   "canIpForward": false,
+   "networkInterfaces": [
+    {
+     "network": "https://www.googleapis.com/compute/v1/projects/project/global/networks/net-loic",
+     "networkIP": "10.240.202.46",
+     "name": "nic0"
+    }
+   ],
+   "disks": [
+    {
+     "kind": "compute#attachedDisk",
+     "index": 0,
+     "type": "PERSISTENT",
+     "mode": "READ_WRITE",
+     "source": "https://www.googleapis.com/compute/v1/projects/project/zones/zone/disks/prefixtest-api-dbvisitor-000002-a",
+     "deviceName": "persistent-disk-0",
+     "boot": true,
+     "interface": "SCSI"
+    }
+   ],
+   "metadata": {
+    "kind": "compute#metadata",
+    "fingerprint": "nt4we5i6WEU=",
+    "items": [
+     {
+      "key": "dmp_env",
+      "value": "dmpenv"
+     },
+     {
+      "key": "account_id",
+      "value": "000002"
+     },
+     {
+      "key": "role",
+      "value": "dbvisitor-a"
+     },
+     {
+      "key": "startup-script-url",
+      "value": "gs://dmp-liveapi-dev-provisionning/init.sh"
+     }
+    ]
+   },
+   "selfLink": "https://www.googleapis.com/compute/v1/projects/project/zones/zone/instances/prefixtest-api-dbvisitor-000002-a",
+   "scheduling": {
+    "onHostMaintenance": "MIGRATE",
+    "automaticRestart": true,
+    "preemptible": false
+   },
+   "cpuPlatform": "Intel Sandy Bridge"
+  },
+  {
+   "kind": "compute#instance",
+   "id": "1354015814728704505",
+   "creationTimestamp": "2015-06-17T09:23:17.821-07:00",
+   "zone": "https://www.googleapis.com/compute/v1/projects/project/zones/zone",
+   "status": "RUNNING",
+   "name": "prefixtest-api-dbvisitor-000002-b",
+   "description": "Je suis une description un peu plus elaboree que celle d'avant",
+   "tags": {
+    "items": [
+     "puppet-agent",
+     "zabbix-agent",
+     "live-api"
+    ],
+    "fingerprint": "dm5e2e0W8lQ="
+   },
+   "machineType": "https://www.googleapis.com/compute/v1/projects/project/zones/zone/machineTypes/g1-small",
+   "canIpForward": false,
+   "networkInterfaces": [
+    {
+     "network": "https://www.googleapis.com/compute/v1/projects/project/global/networks/net-loic",
+     "networkIP": "10.240.59.255",
+     "name": "nic0"
+    }
+   ],
+   "disks": [
+    {
+     "kind": "compute#attachedDisk",
+     "index": 0,
+     "type": "PERSISTENT",
+     "mode": "READ_WRITE",
+     "source": "https://www.googleapis.com/compute/v1/projects/project/zones/zone/disks/prefixtest-api-dbvisitor-000002-b",
+     "deviceName": "persistent-disk-0",
+     "boot": true,
+     "interface": "SCSI"
+    }
+   ],
+   "metadata": {
+    "kind": "compute#metadata",
+    "fingerprint": "nt4we5i6WEU=",
+    "items": [
+     {
+      "key": "dmp_env",
+      "value": "dmpenv"
+     },
+     {
+      "key": "account_id",
+      "value": "000002"
+     },
+     {
+      "key": "role",
+      "value": "dbvisitor-a"
+     },
+     {
+      "key": "startup-script-url",
+      "value": "gs://dmp-liveapi-dev-provisionning/init.sh"
+     }
+    ]
+   },
+   "selfLink": "https://www.googleapis.com/compute/v1/projects/project/zones/zone/instances/prefixtest-api-dbvisitor-000002-b",
+   "scheduling": {
+    "onHostMaintenance": "MIGRATE",
+    "automaticRestart": true,
+    "preemptible": false
+   },
+   "cpuPlatform": "Intel Sandy Bridge"
+  },
+  {
+   "kind": "compute#instance",
+   "id": "939571209111618422",
+   "creationTimestamp": "2015-01-27T02:04:32.251-08:00",
+   "zone": "https://www.googleapis.com/compute/v1/projects/project/zones/zone",
+   "status": "TERMINATED",
+   "name": "test-redis-aa",
+   "tags": {
+    "fingerprint": "42WmSpB8rSM="
+   },
+   "machineType": "https://www.googleapis.com/compute/v1/projects/project/zones/zone/machineTypes/n1-standard-2",
+   "canIpForward": false,
+   "networkInterfaces": [
+    {
+     "network": "https://www.googleapis.com/compute/v1/projects/project/global/networks/default",
+     "networkIP": "10.240.224.250",
+     "name": "nic0",
+     "accessConfigs": [
+      {
+       "kind": "compute#accessConfig",
+       "type": "ONE_TO_ONE_NAT",
+       "name": "External NAT"
+      }
+     ]
+    }
+   ],
+   "disks": [
+    {
+     "kind": "compute#attachedDisk",
+     "index": 0,
+     "type": "PERSISTENT",
+     "mode": "READ_WRITE",
+     "source": "https://www.googleapis.com/compute/v1/projects/project/zones/zone/disks/test-redis-aa",
+     "deviceName": "test-redis-aa",
+     "boot": true,
+     "autoDelete": true,
+     "interface": "SCSI"
+    }
+   ],
+   "metadata": {
+    "kind": "compute#metadata",
+    "fingerprint": "c_KW71G4Huw="
+   },
+   "serviceAccounts": [
+    {
+     "email": "608615760343@developer.gserviceaccount.com",
+     "scopes": [
+      "https://www.googleapis.com/auth/devstorage.read_only"
+     ]
+    }
+   ],
+   "selfLink": "https://www.googleapis.com/compute/v1/projects/project/zones/zone/instances/test-redis-aa",
+   "scheduling": {
+    "onHostMaintenance": "MIGRATE",
+    "automaticRestart": true,
+    "preemptible": false
+   },
+   "cpuPlatform": "Unknown CPU Platform"
+  }
+ ]
+}

@@ -1,0 +1,15 @@
+{
+  "kind": "compute#operation",
+  "id": "16295154975040852089",
+  "name": "operation-1435591876777-519a9c7db9428-ffd6b9b1-af6c1818",
+  "zone": "https://www.googleapis.com/compute/v1/projects/project/zones/zone",
+  "operationType": "stop",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/project/zones/zone/instances/dbddf",
+  "targetId": "15135041120089620599",
+  "status": "PENDING",
+  "user": "loic.marie@ysance.com",
+  "progress": 0,
+  "insertTime": "2015-06-29T08:31:16.898-07:00",
+  "startTime": "2015-06-29T08:31:17.322-07:00",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/project/zones/zone/operations/operation-1435591876777-519a9c7db9428-ffd6b9b1-af6c1818"
+}

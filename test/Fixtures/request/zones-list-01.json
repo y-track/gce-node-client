@@ -1,0 +1,107 @@
+{
+  "kind": "compute#zoneList",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/project/zones",
+  "id": "projects/project/zones",
+  "items": [
+    {
+      "kind": "compute#zone",
+      "selfLink": "https://www.googleapis.com/compute/v1/projects/project/zones/zone-b",
+      "id": "2221",
+      "creationTimestamp": "2014-05-30T18:35:16.575-07:00",
+      "name": "zone-b",
+      "description": "zone-b",
+      "status": "UP",
+      "region": "https://www.googleapis.com/compute/v1/projects/project/regions/zone"
+    },
+    {
+      "kind": "compute#zone",
+      "selfLink": "https://www.googleapis.com/compute/v1/projects/project/zones/zone-c",
+      "id": "2222",
+      "creationTimestamp": "2014-07-15T10:44:08.663-07:00",
+      "name": "zone-c",
+      "description": "zone-c",
+      "status": "UP",
+      "region": "https://www.googleapis.com/compute/v1/projects/project/regions/zone"
+    },
+    {
+      "kind": "compute#zone",
+      "selfLink": "https://www.googleapis.com/compute/v1/projects/project/zones/zone-a",
+      "id": "2220",
+      "creationTimestamp": "2014-05-30T18:35:16.575-07:00",
+      "name": "zone-a",
+      "description": "zone-a",
+      "status": "UP",
+      "region": "https://www.googleapis.com/compute/v1/projects/project/regions/zone"
+    },
+    {
+      "kind": "compute#zone",
+      "selfLink": "https://www.googleapis.com/compute/v1/projects/project/zones/europe-west1-b",
+      "id": "2101",
+      "creationTimestamp": "2014-05-30T18:35:16.447-07:00",
+      "name": "europe-west1-b",
+      "description": "europe-west1-b",
+      "status": "UP",
+      "region": "https://www.googleapis.com/compute/v1/projects/project/regions/europe-west1"
+    },
+    {
+      "kind": "compute#zone",
+      "selfLink": "https://www.googleapis.com/compute/v1/projects/project/zones/europe-west1-c",
+      "id": "2103",
+      "creationTimestamp": "2014-09-02T15:52:35.238-07:00",
+      "name": "europe-west1-c",
+      "description": "europe-west1-c",
+      "status": "UP",
+      "region": "https://www.googleapis.com/compute/v1/projects/project/regions/europe-west1"
+    },
+    {
+      "kind": "compute#zone",
+      "selfLink": "https://www.googleapis.com/compute/v1/projects/project/zones/europe-west1-d",
+      "id": "2104",
+      "creationTimestamp": "2014-12-15T13:42:35.748-08:00",
+      "name": "europe-west1-d",
+      "description": "europe-west1-d",
+      "status": "UP",
+      "region": "https://www.googleapis.com/compute/v1/projects/project/regions/europe-west1"
+    },
+    {
+      "kind": "compute#zone",
+      "selfLink": "https://www.googleapis.com/compute/v1/projects/project/zones/us-central1-c",
+      "id": "2002",
+      "creationTimestamp": "2014-10-29T11:20:06.229-07:00",
+      "name": "us-central1-c",
+      "description": "us-central1-c",
+      "status": "UP",
+      "region": "https://www.googleapis.com/compute/v1/projects/project/regions/us-central1"
+    },
+    {
+      "kind": "compute#zone",
+      "selfLink": "https://www.googleapis.com/compute/v1/projects/project/zones/us-central1-b",
+      "id": "2001",
+      "creationTimestamp": "2014-05-30T18:35:16.514-07:00",
+      "name": "us-central1-b",
+      "description": "us-central1-b",
+      "status": "UP",
+      "region": "https://www.googleapis.com/compute/v1/projects/project/regions/us-central1"
+    },
+    {
+      "kind": "compute#zone",
+      "selfLink": "https://www.googleapis.com/compute/v1/projects/project/zones/us-central1-a",
+      "id": "2000",
+      "creationTimestamp": "2014-05-30T18:35:16.514-07:00",
+      "name": "us-central1-a",
+      "description": "us-central1-a",
+      "status": "UP",
+      "region": "https://www.googleapis.com/compute/v1/projects/project/regions/us-central1"
+    },
+    {
+      "kind": "compute#zone",
+      "selfLink": "https://www.googleapis.com/compute/v1/projects/project/zones/us-central1-f",
+      "id": "2004",
+      "creationTimestamp": "2014-05-30T18:35:16.447-07:00",
+      "name": "us-central1-f",
+      "description": "us-central1-f",
+      "status": "UP",
+      "region": "https://www.googleapis.com/compute/v1/projects/project/regions/us-central1"
+    }
+  ]
+}

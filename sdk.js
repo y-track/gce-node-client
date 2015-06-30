@@ -2,17 +2,16 @@ var CORE = require('./core'),
     disks = require('./disks'),
     instances = require('./instances'),
     machineTypes = require('./machineTypes'),
-    diskTypes = require('./diskTypes'),
     zones = require('./zones'),
     operations = require('./operations');
 
-function SDK(host, metaHost, request){
-    this.core = new CORE(host, metaHost, request);
+function SDK(request, fs, host, metaHost){
+    this.core = new CORE(request, fs, host, metaHost);
 
     this.instances = this.core.generateFunctions(instances.routes);
     this.machineTypes = this.core.generateFunctions(machineTypes.routes);
-    this.diskTypes = this.core.generateFunctions(diskTypes.routes);
     this.disks = this.core.generateFunctions(disks.routes);
+    this.zones = this.core.generateFunctions(zones.routes);
     this.operations = this.core.generateFunctions(operations.routes);
 }
 

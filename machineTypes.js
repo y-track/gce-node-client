@@ -11,7 +11,7 @@ var routes = {
     get: {
         method: 'GET',
         route: function (opts) {
-            return "/" + opts.project + '/zones/' + opts.zone + '/machineTypes/' + opts.machineType;
+            return "/" + opts.project + '/zones/' + opts.zone + '/machineTypes/' + opts.element;
         },
         required: ['project', 'zone', 'element'],
         bodyParams: [],

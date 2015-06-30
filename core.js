@@ -1,13 +1,15 @@
 var crypto = require('crypto'),
     base64url = require('base64url'),
     deepExtend = require('deep-extend'),
-    fs = require('fs'),
-    sep = require('path').sep;
+    sep = require('path').sep,
+    Promise = require('es6-promise').Promise,
+    nock = require('nock');
 
-function CORE(host, metaHost, request){
+function CORE(request, fs, host, metaHost){
     this.host = host || 'www.googleapis.com';
     this.metaHost = metaHost || 'metadata';
     this.request = request || require('request-promise');
+    this.fs = fs || require('fs');
 }
 
 var query = function (route, o) {
@@ -113,12 +115,16 @@ CORE.prototype.refreshToken = function(options){
 }
 
 CORE.prototype.getLocalCredentials = function(){
-  return new Promise(function (fulfill, reject){
-    fs.readFile(process.env.HOME + sep + '.config' + sep + 'gcloud' + sep + 'credentials', 'utf8', function (err, res){
-      if (err) reject(err);
-      else fulfill(JSON.parse(res));
-    });
-  });
+    return new Promise((function (fulfill, reject){
+        this.fs.readFile(process.env.HOME + sep + '.config' + sep + 'gcloud' + sep + 'credentials', 'utf8', function (err, res){
+            if (err) {
+            console.log(err);
+                reject(err);
+            } else {
+                fulfill(JSON.parse(res));
+            }
+        });
+    }).bind(this));
 }
 
 CORE.prototype.getCredentialsFromMetadata = function(){

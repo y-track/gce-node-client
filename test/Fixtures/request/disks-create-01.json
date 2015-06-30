@@ -1,0 +1,14 @@
+{
+  "kind": "compute#operation",
+  "id": "2742169456410096323",
+  "name": "operation-1435651116176-519b792cd1280-40adca09-6be1d1a7",
+  "zone": "https://www.googleapis.com/compute/v1/projects/project/zones/zone",
+  "operationType": "insert",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/project/zones/zone/disks/new-disk-test",
+  "targetId": "3961950437740901059",
+  "status": "PENDING",
+  "user": "loic.marie@ysance.com",
+  "progress": 0,
+  "insertTime": "2015-06-30T00:58:36.371-07:00",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/project/zones/zone/operations/operation-1435651116176-519b792cd1280-40adca09-6be1d1a7"
+}

@@ -1,0 +1,13 @@
+{
+  "error": {
+    "errors": [
+      {
+        "domain": "global",
+        "reason": "notFound",
+        "message": "The resource 'projects/project/zones/zone/machineTypes/machineType' was not found"
+      }
+    ],
+    "code": 404,
+    "message": "The resource 'projects/project/zones/zone/machineTypes/machineType' was not found"
+  }
+}

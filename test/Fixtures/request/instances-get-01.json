@@ -1,0 +1,59 @@
+{
+   "kind": "compute#instance",
+   "id": "11457358114537374699",
+   "creationTimestamp": "2015-06-15T08:36:17.159-07:00",
+   "zone": "https://www.googleapis.com/compute/v1/projects/project/zones/zone",
+   "status": "TERMINATED",
+   "name": "dbddf",
+   "tags": {
+    "fingerprint": "42WmSpB8rSM="
+   },
+   "machineType": "https://www.googleapis.com/compute/v1/projects/project/zones/zone/machineTypes/n1-standard-1",
+   "canIpForward": false,
+   "networkInterfaces": [
+    {
+     "network": "https://www.googleapis.com/compute/v1/projects/project/global/networks/default",
+     "networkIP": "10.240.162.168",
+     "name": "nic0",
+     "accessConfigs": [
+      {
+       "kind": "compute#accessConfig",
+       "type": "ONE_TO_ONE_NAT",
+       "name": "external-nat"
+      }
+     ]
+    }
+   ],
+   "disks": [
+    {
+     "kind": "compute#attachedDisk",
+     "index": 0,
+     "type": "PERSISTENT",
+     "mode": "READ_WRITE",
+     "source": "https://www.googleapis.com/compute/v1/projects/project/zones/zone/disks/dbddf",
+     "deviceName": "persistent-disk-0",
+     "boot": true,
+     "autoDelete": true,
+     "interface": "SCSI"
+    }
+   ],
+   "metadata": {
+    "kind": "compute#metadata",
+    "fingerprint": "c_KW71G4Huw="
+   },
+   "serviceAccounts": [
+    {
+     "email": "608615760343@developer.gserviceaccount.com",
+     "scopes": [
+      "https://www.googleapis.com/auth/devstorage.full_control"
+     ]
+    }
+   ],
+   "selfLink": "https://www.googleapis.com/compute/v1/projects/project/zones/zone/instances/dbddf",
+   "scheduling": {
+    "onHostMaintenance": "MIGRATE",
+    "automaticRestart": true,
+    "preemptible": false
+   },
+   "cpuPlatform": "Unknown CPU Platform"
+  }
