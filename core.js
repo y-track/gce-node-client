@@ -3,11 +3,16 @@ var crypto = require('crypto'),
     deepExtend = require('deep-extend'),
     sep = require('path').sep,
     Promise = require('es6-promise').Promise,
-    nock = require('nock');
+    nock = require('nock'),
+    bunyan = require('bunyan'),
+    log = bunyan.createLogger({
+        name: 'logger',
+        level: 'trace'
+    });
 
 function CORE(request, fs, host, metaHost){
-    this.host = host || 'www.googleapis.com';
-    this.metaHost = metaHost || 'metadata';
+    this.host = host;
+    this.metaHost = metaHost;
     this.request = request || require('request-promise');
     this.fs = fs || require('fs');
 }
@@ -37,7 +42,7 @@ var query = function (route, o) {
         return total;
     }, {});
 
-    var url = "https://" + this.host + "/compute/v1/projects" + route.route(params);
+    var url = this.host + "/compute/v1/projects" + route.route(params);
     var req = (route.method.toUpperCase() === "POST")
     ? this.request({
         url: url,
@@ -56,6 +61,7 @@ var query = function (route, o) {
         },
         form: body
     });
+    log.info(url);
     return req;
 };
 
@@ -73,7 +79,7 @@ CORE.prototype.getToken = function (client_email, private_key, scope) {
         jwt = JSON.stringify({
             iss: client_email,
             scope: scope,
-            aud: "https://" + this.host + "/oauth2/v3/token",
+            aud: this.host + "/oauth2/v3/token",
             exp: Math.floor(new Date().getTime() / 1000) + 3600,
             iat: Math.floor(new Date().getTime() / 1000)
         });
@@ -86,7 +92,7 @@ CORE.prototype.getToken = function (client_email, private_key, scope) {
 
     var line = header_64 + '.' + jwt_64 + '.' + sign_64;
 
-    var url = "https://" + this.host + "/oauth2/v3/token";
+    var url = this.host + "/oauth2/v3/token";
 
     return this.request({
         url: url,
@@ -99,8 +105,9 @@ CORE.prototype.getToken = function (client_email, private_key, scope) {
 };
 
 CORE.prototype.refreshToken = function(options){
+    console.log(this.host + '/oauth2/v3/token');
     return this.request({
-        url: 'https://' + this.host + '/oauth2/v3/token',
+        url: this.host + '/oauth2/v3/token',
         method: 'POST',
         form: {
             client_id: options.client_id,
@@ -110,6 +117,7 @@ CORE.prototype.refreshToken = function(options){
         },
         json: true
     }).then(function(data){
+        log.info('ok2');
         return Promise.resolve(data.access_token);
     });
 }

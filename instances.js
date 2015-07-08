@@ -36,7 +36,7 @@ var routes = {
         queryParams: ['project', 'zone', 'instance']
     },
     stop: {
-        method: 'POST',
+        method: 'GET',
         route: function (opts) {
             return "/" + opts.project + '/zones/' + opts.zone + '/instances/' + opts.instance + '/stop';
         },
@@ -45,7 +45,7 @@ var routes = {
         queryParams: ['project', 'zone', 'instance']
     },
     start: {
-        method: 'POST',
+        method: 'GET',
         route: function (opts) {
             return "/" + opts.project + '/zones/' + opts.zone + '/instances/' + opts.instance + '/start';
         },
