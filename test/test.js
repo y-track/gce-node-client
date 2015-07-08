@@ -440,7 +440,7 @@ describe('Instances', function(){
 				var sdk = new SDK();
 				
 				nock('https://www.googleapis.com:443')
-					.post('/compute/v1/projects/project/zones/zone/instances/dbddf/stop', require('./Fixtures/request/instances-stop-01-postparams.json'))
+					.get('/compute/v1/projects/project/zones/zone/instances/dbddf/stop', require('./Fixtures/request/instances-stop-01-postparams.json'))
 					.reply(200, require('./Fixtures/request/instances-stop-01.json'));
 
 
@@ -457,9 +457,18 @@ describe('Instances', function(){
 				})
 			});
 
-			it('should return a valid JSON object', function(done){
-				assert.equal('object', typeof res);
+			it('should get a valid string', function(done){
+				assert.equal('string', typeof res);
 				done();
+			});
+
+			it('should be JSON parsable', function(done){
+				try {
+					res = JSON.parse(res);
+					done();
+				} catch(err) {
+					done(err);
+				}
 			});
 
 			it('should return valid compute operation', function(done){
@@ -481,7 +490,7 @@ describe('Instances', function(){
 				var sdk = new SDK();
 				
 				nock('https://www.googleapis.com:443')
-					.post('/compute/v1/projects/project/zones/zone/instances/dbddf/stop', require('./Fixtures/request/instances-stop-02-postparams.json'))
+					.get('/compute/v1/projects/project/zones/zone/instances/dbddf/stop', require('./Fixtures/request/instances-stop-02-postparams.json'))
 					.reply(404, require('./Fixtures/request/instances-stop-02.json'));
 
 
@@ -509,7 +518,7 @@ describe('Instances', function(){
 			});
 
 			it('should return the expected error', function(done){
-				assert.deepEqual(require('./Fixtures/request/instances-stop-02.json'), res.response.body);
+				assert.deepEqual(require('./Fixtures/request/instances-stop-02.json'), JSON.parse(res.response.body));
 				done();
 			});
 		});
@@ -527,7 +536,7 @@ describe('Instances', function(){
 				var sdk = new SDK();
 				
 				nock('https://www.googleapis.com:443')
-					.post('/compute/v1/projects/project/zones/zone/instances/dbddf/start', require('./Fixtures/request/instances-start-01-postparams.json'))
+					.get('/compute/v1/projects/project/zones/zone/instances/dbddf/start')
 					.reply(200, require('./Fixtures/request/instances-start-01.json'));
 
 
@@ -541,12 +550,21 @@ describe('Instances', function(){
 					done();
 				}).catch(function(err){
 					done(err);
-				})
+				});
 			});
 
-			it('should return a valid JSON object', function(done){
-				assert.equal('object', typeof res);
+			it('should get a valid string', function(done){
+				assert.equal('string', typeof res);
 				done();
+			});
+
+			it('should be JSON parsable', function(done){
+				try {
+					res = JSON.parse(res);
+					done();
+				} catch(err) {
+					done(err);
+				}
 			});
 
 			it('should return valid compute operation', function(done){
@@ -562,7 +580,7 @@ describe('Instances', function(){
 				var sdk = new SDK();
 				
 				nock('https://www.googleapis.com:443')
-					.post('/compute/v1/projects/project/zones/zone/instances/dbddf/start', require('./Fixtures/request/instances-start-02-postparams.json'))
+					.get('/compute/v1/projects/project/zones/zone/instances/dbddf/start', require('./Fixtures/request/instances-start-02-postparams.json'))
 					.reply(404, require('./Fixtures/request/instances-start-02.json'));
 
 
@@ -590,7 +608,7 @@ describe('Instances', function(){
 			});
 
 			it('should return the expected error', function(done){
-				assert.deepEqual(require('./Fixtures/request/instances-start-02.json'), res.response.body);
+				assert.deepEqual(require('./Fixtures/request/instances-start-02.json'), JSON.parse(res.response.body));
 				done();
 			});
 		});
