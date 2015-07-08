@@ -12,7 +12,6 @@
     "base64url": "^1.0.4",
     "deep-extend": "^0.4.0",
     "es6-promise": "^2.3.0",
-    "mocha-nock-fixtures": "^0.2.0",
     "nock": "^2.6.0",
     "request-promise": "^0.4.2"
   }

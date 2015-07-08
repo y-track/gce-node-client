@@ -11,8 +11,8 @@ var crypto = require('crypto'),
     });
 
 function CORE(request, fs, host, metaHost){
-    this.host = host;
-    this.metaHost = metaHost;
+    this.host = host || 'http://www.googleapis.com';
+    this.metaHost = metaHost || 'http://metadata';
     this.request = request || require('request-promise');
     this.fs = fs || require('fs');
 }
@@ -105,7 +105,6 @@ CORE.prototype.getToken = function (client_email, private_key, scope) {
 };
 
 CORE.prototype.refreshToken = function(options){
-    console.log(this.host + '/oauth2/v3/token');
     return this.request({
         url: this.host + '/oauth2/v3/token',
         method: 'POST',
@@ -117,7 +116,6 @@ CORE.prototype.refreshToken = function(options){
         },
         json: true
     }).then(function(data){
-        log.info('ok2');
         return Promise.resolve(data.access_token);
     });
 }
