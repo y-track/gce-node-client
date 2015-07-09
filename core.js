@@ -8,7 +8,6 @@ var crypto = require('crypto'),
 function CORE(request, fs, host, metaHost){
     this.host = host || 'www.googleapis.com';
     this.metaHost = metaHost || 'metadata';
-    console.log(metaHost+" et "+this.metaHost);
     this.request = request || require('request-promise');
     this.fs = fs || require('fs');
 }
@@ -128,6 +127,7 @@ CORE.prototype.getLocalCredentials = function(){
 }
 
 CORE.prototype.getCredentialsFromMetadata = function(){
+    console.log('http://' + this.metaHost + '/computeMetadata/v1/instance/service-accounts/default/token');
     return this.request({
         url: 'http://' + this.metaHost + '/computeMetadata/v1/instance/service-accounts/default/token',
         method: 'GET',
