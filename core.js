@@ -37,7 +37,7 @@ var query = function (route, o) {
         return total;
     }, {});
 
-    var url = 'https://' + this.host + "/compute/v1/projects" + route.route(params);
+    var url = (('127.0.0.1:8000' === this.host) ? 'http://' : 'https://') + this.host + "/compute/v1/projects" + route.route(params);
     var req = (route.method.toUpperCase() === "POST")
     ? this.request({
         url: url,
@@ -100,7 +100,7 @@ CORE.prototype.getToken = function (client_email, private_key, scope) {
 
 CORE.prototype.refreshToken = function(options){
     return this.request({
-        url: 'https://' + this.host + '/oauth2/v3/token',
+        url: (('127.0.0.1:8000' === this.host) ? 'http://' : 'https://') + this.host + '/oauth2/v3/token',
         method: 'POST',
         form: {
             client_id: options.client_id,
