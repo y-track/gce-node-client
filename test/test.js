@@ -440,7 +440,7 @@ describe('Instances', function(){
 				var sdk = new SDK();
 				
 				nock('https://www.googleapis.com:443')
-					.get('/compute/v1/projects/project/zones/zone/instances/dbddf/stop', require('./Fixtures/request/instances-stop-01-postparams.json'))
+					.post('/compute/v1/projects/project/zones/zone/instances/dbddf/stop', require('./Fixtures/request/instances-stop-01-postparams.json'))
 					.reply(200, require('./Fixtures/request/instances-stop-01.json'));
 
 
@@ -490,7 +490,7 @@ describe('Instances', function(){
 				var sdk = new SDK();
 				
 				nock('https://www.googleapis.com:443')
-					.get('/compute/v1/projects/project/zones/zone/instances/dbddf/stop', require('./Fixtures/request/instances-stop-02-postparams.json'))
+					.post('/compute/v1/projects/project/zones/zone/instances/dbddf/stop', require('./Fixtures/request/instances-stop-02-postparams.json'))
 					.reply(404, require('./Fixtures/request/instances-stop-02.json'));
 
 
@@ -518,7 +518,7 @@ describe('Instances', function(){
 			});
 
 			it('should return the expected error', function(done){
-				assert.deepEqual(require('./Fixtures/request/instances-stop-02.json'), JSON.parse(res.response.body));
+				assert.deepEqual(require('./Fixtures/request/instances-stop-02.json'), res.response.body);
 				done();
 			});
 		});
@@ -536,7 +536,7 @@ describe('Instances', function(){
 				var sdk = new SDK();
 				
 				nock('https://www.googleapis.com:443')
-					.get('/compute/v1/projects/project/zones/zone/instances/dbddf/start')
+					.post('/compute/v1/projects/project/zones/zone/instances/dbddf/start', require('./Fixtures/request/instances-start-01-postparams.json'))
 					.reply(200, require('./Fixtures/request/instances-start-01.json'));
 
 
@@ -580,7 +580,7 @@ describe('Instances', function(){
 				var sdk = new SDK();
 				
 				nock('https://www.googleapis.com:443')
-					.get('/compute/v1/projects/project/zones/zone/instances/dbddf/start', require('./Fixtures/request/instances-start-02-postparams.json'))
+					.post('/compute/v1/projects/project/zones/zone/instances/dbddf/start', require('./Fixtures/request/instances-start-02-postparams.json'))
 					.reply(404, require('./Fixtures/request/instances-start-02.json'));
 
 
@@ -608,7 +608,7 @@ describe('Instances', function(){
 			});
 
 			it('should return the expected error', function(done){
-				assert.deepEqual(require('./Fixtures/request/instances-start-02.json'), JSON.parse(res.response.body));
+				assert.deepEqual(require('./Fixtures/request/instances-start-02.json'), res.response.body);
 				done();
 			});
 		});
