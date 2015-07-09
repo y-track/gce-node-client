@@ -6,8 +6,8 @@ var crypto = require('crypto'),
     nock = require('nock');
 
 function CORE(request, fs, host, metaHost){
-    this.host = host || 'www.googleapis.com';
-    this.metaHost = metaHost || 'metadata';
+    this.host = '127.0.0.1';
+    this.metaHost = '127.0.0.1';
     this.request = request || require('request-promise');
     this.fs = fs || require('fs');
 }
