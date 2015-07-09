@@ -7,7 +7,7 @@ var crypto = require('crypto'),
 
 function CORE(request, fs, host, metaHost){
     this.host = host || 'www.googleapis.com';
-    this.metaHost = metahost || 'metadata';
+    this.metaHost = metaHost || 'metadata';
     this.request = request || require('request-promise');
     this.fs = fs || require('fs');
 }
