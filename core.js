@@ -111,8 +111,6 @@ CORE.prototype.refreshToken = function(options){
         json: true
     }).then(function(data){
         return Promise.resolve(data.access_token);
-    }).catch(function(err){
-        console.log(err);
     });
 }
 
