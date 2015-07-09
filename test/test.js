@@ -457,18 +457,9 @@ describe('Instances', function(){
 				})
 			});
 
-			it('should get a valid string', function(done){
-				assert.equal('string', typeof res);
+			it('should get valid JSON object', function(done){
+				assert.equal('object', typeof res);
 				done();
-			});
-
-			it('should be JSON parsable', function(done){
-				try {
-					res = JSON.parse(res);
-					done();
-				} catch(err) {
-					done(err);
-				}
 			});
 
 			it('should return valid compute operation', function(done){
@@ -553,18 +544,9 @@ describe('Instances', function(){
 				});
 			});
 
-			it('should get a valid string', function(done){
-				assert.equal('string', typeof res);
+			it('should get valid JSON object', function(done){
+				assert.equal('object', typeof res);
 				done();
-			});
-
-			it('should be JSON parsable', function(done){
-				try {
-					res = JSON.parse(res);
-					done();
-				} catch(err) {
-					done(err);
-				}
 			});
 
 			it('should return valid compute operation', function(done){

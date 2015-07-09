@@ -10,3 +10,5 @@ fsMock.prototype.expect = function(value, expected){
 	this.associations[value] = expected;
 	return this;
 };
+
+module.exports = fsMock;
