@@ -127,7 +127,6 @@ CORE.prototype.getLocalCredentials = function(){
 }
 
 CORE.prototype.getCredentialsFromMetadata = function(){
-    console.log('http://' + this.metaHost + '/computeMetadata/v1/instance/service-accounts/default/token');
     return this.request({
         url: 'http://' + this.metaHost + '/computeMetadata/v1/instance/service-accounts/default/token',
         method: 'GET',
@@ -136,8 +135,6 @@ CORE.prototype.getCredentialsFromMetadata = function(){
         }
     }).then(function(data){
         return Promise.resolve(JSON.parse(data));
-    }).catch(function(err){
-        console.log('http://' + this.metaHost + '/computeMetadata/v1/instance/service-accounts/default/token');
     });
 }
 
