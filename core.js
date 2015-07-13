@@ -116,7 +116,7 @@ CORE.prototype.refreshToken = function(options){
 
 CORE.prototype.getLocalCredentials = function(){
     return new Promise((function (fulfill, reject){
-        this.fs.readFile(process.env.HOME + sep + '.config' + sep + 'gcloud' + sep + 'credentials', 'utf8', function (err, res){
+        this.fs.readFile(process.env.HOME + sep + '.config' + sep + 'gcloud' + sep + 'application_default_credentials.json', 'utf8', function (err, res){
             if (err) {
                 reject(err);
             } else {
