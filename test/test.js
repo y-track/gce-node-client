@@ -56,7 +56,7 @@ describe('Credentials', function(){
 				sdk = new SDK(undefined, fsMock);
 
 			fsMock
-				.expect(process.env.HOME + sep + '.config' + sep + 'gcloud' + sep + 'credentials', require('./Fixtures/fs/getLocalCredentials-01.json'));
+				.expect(process.env.HOME + sep + '.config' + sep + 'gcloud' + sep + 'application_default_credentials.json', require('./Fixtures/fs/getLocalCredentials-01.json'));
 
 			sdk.getLocalCredentials().then(function(data){
 				res = data;
@@ -72,29 +72,18 @@ describe('Credentials', function(){
 			done();
 		});
 
-		it('should find a default account', function(done){
-			var found = false;
-			res.data.forEach(function(e){
-                if('default' === e.key.account){
-                	res = e;
-                    found = true;
-                }
-            });
-			done((found) ? undefined : new Error('There is no default account'));
-		});
-
 		it('should get a valid refresh token', function(done){
-			assert.equal('refresh-token-default', res.credential.refresh_token);
+			assert.equal('refresh-token-default', res.refresh_token);
 			done();
 		});
 
 		it('should get a valid client id', function(done){
-			assert.equal('client-id-default', res.credential.client_id);
+			assert.equal('client-id-default', res.client_id);
 			done();
 		});
 
 		it('should get a valid client secret', function(done){
-			assert.equal('client-secret-default', res.credential.client_secret);
+			assert.equal('client-secret-default', res.client_secret);
 			done();
 		});
 
